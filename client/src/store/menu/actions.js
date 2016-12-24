@@ -3,7 +3,7 @@
 import {
   PLAY_SELECTED,
   MODE_SELECTED,
-  GO_TO_MAIN,
+  GO_TO_MAIN
 } from './constants'
 
 export function selectPlay(){
