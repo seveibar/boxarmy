@@ -27,7 +27,30 @@ const MenuPage = (props: any) => {
       )
       break
     case 'select-mode':
-      main = (<div> { 'selecting mode' } </div>)
+      main = (
+        <div>
+          <div> { 'selecting mode' } </div>
+          <button
+            onClick={
+              () => dispatch(selectMode("1v1"))
+            }>
+            { "1v1" }
+          </button>
+          <button
+            onClick={
+              () => dispatch(selectMode("FFA8"))
+            }>
+            { "FFA8" }
+          </button>
+        </div>
+      )
+      break
+    case "waiting":
+      main = (
+        <div>
+          <div> { 'waiting in lobby' } </div>
+        </div>
+      )
       break
     default:
       main = (<div> { 'nothing' } </div>)

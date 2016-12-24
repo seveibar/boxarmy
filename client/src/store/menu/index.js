@@ -16,7 +16,7 @@ const MenuPageReducer = (state: any, action: any) => {
     case MODE_SELECTED:
       return {
         ...state,
-        submenu: '',
+        submenu: 'waiting',
         mode: action.mode
       }
     case PLAY_SELECTED:
