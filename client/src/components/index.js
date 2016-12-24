@@ -1,5 +1,2 @@
 export * from './templates'
-export * from './Game'
-export * from './Menu'
-export * from './pages'
 export App from './App'

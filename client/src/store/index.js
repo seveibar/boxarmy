@@ -4,10 +4,12 @@ import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
 import { fork } from 'redux-saga/effects'
 import { reducer as form } from 'redux-form'
+import menu from './menu'
 
 const reducers = {
   routing,
-  form
+  form,
+  menu
 }
 
 const sagas = []
