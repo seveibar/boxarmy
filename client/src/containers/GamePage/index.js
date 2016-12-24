@@ -1,24 +1,48 @@
 import React from 'react'
 import { Layer, Stage} from 'react-konva'
-import Cell from "./Cell"
+import Cell from './Cell'
+import { connect } from 'react-redux'
 
 const GamePage = (props) => {
+  const { boardState, playerIndex } = props.state
+  const { cells, players } = boardState
+  const myPlayer = players[playerIndex]
+
+  const renderCells = []
+  for (let ri = 0; ri < cells.length; ri++) {
+    for (let ci = 0; ci < cells.length; ci++) {
+      const { owner, force, type } = cells[ri][ci]
+      const moveUsingCell = myPlayer.moves.find((move) => {
+        const { x, y } = move.cell
+        return ri === y && ci === x
+      })
+      let direction
+      if (moveUsingCell) {
+        direction = moveUsingCell.direction
+      }
+      renderCells.push({
+        x: ci * 100, y: ri * 100, owner, force, type, direction,
+        key: [ci, ri].join(',')
+      })
+    }
+  }
+
   return (
     <div>
       <Stage width={700} height={700}>
-        <Layer>
-          <Cell x={50} y={10} owner={1} force={10} type={"king"} />
-          <Cell x={200} y={10} owner={0} force={0} type={"mountain"} />
-          <Cell x={350} y={10} owner={2} force={50} type={"land"} />
-          <Cell x={500} y={10} owner={3} force={50} type={"city"} />
-          <Cell x={50} y={160} owner={5} force={10} type={"king"} direction={"up"} />
-          <Cell x={200} y={160} owner={4} force={20} type={"land"} direction={"left"} />
-          <Cell x={350} y={160} owner={2} force={50} type={"land"} direction={"down"} />
-          <Cell x={500} y={160} owner={3} force={50} type={"city"} direction={"right"} />
+        <Layer scale={2}>
+          {
+            renderCells.map((renderCell) => (
+              <Cell {...renderCell} />
+            ))
+          }
         </Layer>
       </Stage>
     </div>
   )
 }
 
-export default GamePage
+export default connect(
+  (state) => ({ state: state.game }),
+  (dispatch) => ({ dispatch })
+)(GamePage)

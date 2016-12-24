@@ -5,11 +5,13 @@ import { routerReducer as routing } from 'react-router-redux'
 import { fork } from 'redux-saga/effects'
 import { reducer as form } from 'redux-form'
 import menu from './menu'
+import game from './game'
 
 const reducers = {
   routing,
   form,
-  menu
+  menu,
+  game
 }
 
 const sagas = []

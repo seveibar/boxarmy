@@ -8,8 +8,7 @@
       "name": "player1",
       "moves": [
         {
-          "cellx": 0,
-          "celly": 0,
+          "cell": {"x": 0, "y": 0},
           "direction": "up"
         }
       ]

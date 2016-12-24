@@ -10,7 +10,10 @@ const initialState = stateExample
 const GamePageReducer = (state: any, action: any) => {
   switch (action.type) {
     default:
-      return initialState
+      return {
+        boardState: initialState,
+        playerIndex: 1
+      }
   }
 }
 
