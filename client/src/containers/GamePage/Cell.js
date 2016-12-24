@@ -23,12 +23,10 @@ export const Cell = (props) => {
         <Group opacity={0.75}>
           <Line
             points={[
-              27.652926, 64.4567, 22.475894, 44.6325, 25.253814,
-              42.6122, 36.365492, 48.5468, 47.855977, 29.85902,
-              51.644049, 29.98528, 63.134534, 48.7994, 73.867405,
-              42.4859, 77.529208, 45.0113, 72.099638, 64.4567,
-              26.769042, 63.9517, 26.895312, 72.6642, 72.225907,
-              72.6642, 72.0113, 64.099638
+              28, 64, 22, 45, 25, 43, 36, 49,
+              48, 30, 52, 30, 63, 49, 74, 42,
+              78, 45, 72, 64, 27, 64, 27, 73,
+              72, 73, 72, 64
             ]}
             stroke={'#000'}
             strokeWidth={4}
@@ -59,6 +57,41 @@ export const Cell = (props) => {
         </Group>
       )
       break
+    case 'mountain':
+      background = (
+        <Group opacity={0.75}>
+          <Line
+            points={[
+              67, 53, 65, 50, 62, 48, 60, 45,
+              58, 43, 55, 40, 53, 37, 51, 34,
+              49, 32, 46, 31, 43, 29, 40, 28,
+              37, 26, 35, 25, 32, 25, 30, 28,
+              28, 31, 26, 34, 24, 38, 22, 41,
+              20, 44, 18, 47, 16, 50, 14, 54,
+              13, 58, 12, 62, 10, 66, 10, 70
+            ]}
+            stroke={'#000'}
+            strokeWidth={4}
+            lineCap={'round'}
+            lineJoin={'round'}
+          />
+          <Line
+            points={[
+              46, 72, 48, 69, 50, 66, 52, 63,
+              54, 60, 57, 58, 60, 58, 62, 57,
+              65, 55, 68, 53, 70, 51, 73, 50,
+              76, 52, 78, 54, 81, 55, 83, 57,
+              86, 60, 88, 63, 90, 66, 90, 71,
+              90, 75
+            ]}
+            stroke={'#000'}
+            strokeWidth={4}
+            lineCap={'round'}
+            lineJoin={'round'}
+          />
+        </Group>
+      )
+      break
   }
 
   return (
@@ -70,14 +103,15 @@ export const Cell = (props) => {
         strokeWidth={3}
       />
       { background }
-      <Text
-        x={0} y={32} text={force.toString()}
-        width={100}
-        shadowColor={'black'}
-        shadowBlur={8}
-        shadowOpacity={1}
-        fontSize={32} fill={'#fff'} align={'center'}
-      />
+      { force > 0 ?
+        <Text
+          x={0} y={32} text={force.toString()}
+          width={100}
+          shadowColor={'black'}
+          shadowBlur={8}
+          shadowOpacity={1}
+          fontSize={32} fill={'#fff'} align={'center'}
+        /> : null }
     </Group>
   )
 }
