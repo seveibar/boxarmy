@@ -1,16 +1,12 @@
-// @flow
-
 import React from 'react'
-
 import { PageTemplate } from 'components'
 
-const HomePage = (props) => {
-  console.log(props);
+const MenuPage = (props) => {
   return (
     <PageTemplate>
-      {JSON.stringify(props)}
+      <div> { 'test text ' } </div>
     </PageTemplate>
   )
 }
 
-export default HomePage
+export default MenuPage
