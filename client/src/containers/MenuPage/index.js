@@ -32,20 +32,20 @@ const MenuPage = (props: any) => {
           <div> { 'selecting mode' } </div>
           <button
             onClick={
-              () => dispatch(selectMode("1v1"))
+              () => dispatch(selectMode('1v1'))
             }>
-            { "1v1" }
+            { '1v1' }
           </button>
           <button
             onClick={
-              () => dispatch(selectMode("FFA8"))
+              () => dispatch(selectMode('FFA8'))
             }>
-            { "FFA8" }
+            { 'FFA8' }
           </button>
         </div>
       )
       break
-    case "waiting":
+    case 'waiting':
       main = (
         <div>
           <div> { 'waiting in lobby' } </div>
