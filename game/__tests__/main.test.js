@@ -25,12 +25,15 @@ describe('game mechanics', () => {
     expect(game.getState()).toEqual({
       players: [
         {
+          name: 'neutral',
           moves: []
         },
         {
+          name: 'player1',
           moves: []
         },
         {
+          name: 'player2',
           moves: []
         }
       ],
