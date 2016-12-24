@@ -5,20 +5,24 @@ import Game from '../src';
 describe('game mechanics', () => {
 
   let game;
-  it('should start the game with a state', () => {
+  it.only('should start the game with a state', () => {
     game = new Game();
 
     game.init({
-      sizex: 2,
-      sizey: 2,
-      players: 2,
-      startingPositions: [
-        [0,0], [1,1]
-      ],
-      obstacles: false
+      size: { x: 2, y: 2 },
+      players: [
+        {
+          name: "player1",
+          start: { x: 0,y: 0 }
+        },
+        {
+          name: "player2",
+          start: { x: 0,y: 0 }
+        }
+      ]
     });
 
-    expect(game.getState()).toDeepEqual({
+    expect(game.getState()).toEqual({
       players: [
         {
           moves: []
@@ -58,7 +62,7 @@ describe('game mechanics', () => {
         { type: "king", owner: 2, force: 3 },
       ]
     ]);
-  })
+  });
 
   it('should allow the entry of moves into the game', () => {
     game.addMove({

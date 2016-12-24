@@ -1,0 +1,48 @@
+{
+  "players": [
+    {
+      "name": "neutral",
+      "moves": []
+    },
+    {
+      "name": "player1",
+      "moves": [
+        {
+          "cellx": 0,
+          "celly": 0,
+          "direction": "up"
+        }
+      ]
+    },
+    {
+      "name": "player2",
+      "moves": []
+    }
+  ],
+  "cells": [
+    [
+      {
+        "type": "king",
+        "owner": 1,
+        "force": 1
+      },
+      {
+        "type": "land",
+        "owner": 0,
+        "force": 0
+      }
+    ],
+    [
+      {
+        "type": "land",
+        "owner": 0,
+        "force": 0
+      },
+      {
+        "type": "king",
+        "owner": 2,
+        "force": 1
+      }
+    ]
+  ]
+}

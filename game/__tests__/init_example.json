@@ -1,0 +1,22 @@
+{
+  "size": {
+    "x": 2,
+    "y": 2
+  },
+  "players": [
+    {
+      "name": "player1",
+      "start": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "player2",
+      "start": {
+        "x": 1,
+        "y": 1
+      }
+    }
+  ]
+}
