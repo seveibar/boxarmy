@@ -35,6 +35,7 @@
         "excludeArrowFunctions": true
       }
     ],
+    "no-unused-vars": 1,
     "quotes": 0,
     "no-trailing-spaces": 1,
     "comma-dangle": 0,

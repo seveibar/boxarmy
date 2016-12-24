@@ -1,16 +1,14 @@
 /** @flow */
 
+import { range } from 'range';
+
 import type { InitParams, GameState } from './types.flow';
 
 export default class Game {
 
   state: GameState;
 
-  constructor() {
-    // this.
-  }
-
-  init(initObject: InitObject){
+  init(initObject: InitParams) {
 
     const { size, players } = initObject;
 
@@ -20,7 +18,11 @@ export default class Game {
       ].concat(players.map(player => ({
         name: player.name,
         moves: []
-      })))
+      }))),
+      cells: Array(size.x).map((_,i) => {
+        console.log(i);
+        return i;
+      })
     };
   }
 
