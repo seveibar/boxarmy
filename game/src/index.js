@@ -19,11 +19,12 @@ export default class Game {
         name: player.name,
         moves: []
       }))),
-      cells: Array(size.x).map((_,i) => {
-        console.log(i);
-        return i;
-      })
+      cells: range(0,size.x).map(row => range(0, size.y).map(col =>
+        ({ type: 'land', owner: 0, force: 0 })))
     };
+
+    // Update cells where the player starts with the king
+
   }
 
 
