@@ -17,7 +17,7 @@ export type Player = {
 export type Cell = {
   owner: number,
   force: number,
-  type: "king"|"mountain"|"land"
+  type: "king"|"mountain"|"land"|"city"
 };
 
 export type GameState = {

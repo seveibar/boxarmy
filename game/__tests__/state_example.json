@@ -1,4 +1,5 @@
 {
+  "size": { "x": 2, "y": 2 },
   "players": [
     {
       "name": "neutral",

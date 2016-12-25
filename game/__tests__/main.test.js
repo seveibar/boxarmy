@@ -17,7 +17,7 @@ describe('game mechanics', () => {
         },
         {
           name: "player2",
-          start: { x: 0,y: 0 }
+          start: { x: 1,y: 1 }
         }
       ]
     });
