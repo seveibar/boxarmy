@@ -25,6 +25,7 @@
     "arrow-parens": [
       1
     ],
+    "object-property-newline": 1,
     "keyword-spacing": 1,
     "space-before-blocks": [1],
     "no-use-before-define": 0,

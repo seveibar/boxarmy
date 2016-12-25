@@ -1,13 +1,18 @@
 import React from 'react'
-import { Layer, Stage} from 'react-konva'
+import { Layer, Stage, Group } from 'react-konva'
 import Cell from './Cell'
 import { connect } from 'react-redux'
+import {
+  mouseDown, mouseUp, mouseMove
+} from '../../store/game/actions'
 
 const GamePage = (props) => {
-  const { boardState, playerIndex } = props.state
+  const { dispatch } = props
+  const { boardState, playerIndex, camera, mouse } = props.state
   const { cells, players } = boardState
   const myPlayer = players[playerIndex]
 
+  // Collect all the information to render the cells
   const renderCells = []
   for (let ri = 0; ri < cells.length; ri++) {
     for (let ci = 0; ci < cells.length; ci++) {
@@ -26,16 +31,36 @@ const GamePage = (props) => {
       })
     }
   }
-
+  const { innerWidth, innerHeight } = window
   return (
-    <div>
-      <Stage width={700} height={700}>
-        <Layer scale={2}>
-          {
-            renderCells.map((renderCell) => (
-              <Cell {...renderCell} />
-            ))
-          }
+    <div
+      onMouseDown={(e) => {
+        dispatch(mouseDown(e.clientX, e.clientY))
+      }}
+      onMouseUp={(e) => {
+        dispatch(mouseUp(e.clientX, e.clientY))
+      }}
+      onMouseMove={(e) => {
+        if (mouse.down){
+          dispatch(mouseMove(e.clientX, e.clientY))
+        }
+      }}
+      >
+      <Stage width={innerWidth} height={innerHeight}>
+        <Layer>
+          <Group
+            x={camera.x + innerWidth / 2}
+            y={camera.y + innerHeight / 2}
+            offsetX={camera.x}
+            offsetY={camera.y}
+            scaleX={camera.scale.x}
+            scaleY={camera.scale.y}>
+            {
+              renderCells.map((renderCell) => (
+                <Cell {...renderCell} />
+              ))
+            }
+          </Group>
         </Layer>
       </Stage>
     </div>
