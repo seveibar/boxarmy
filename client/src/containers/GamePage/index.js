@@ -3,7 +3,7 @@ import { Layer, Stage, Group } from 'react-konva'
 import Cell from './Cell'
 import { connect } from 'react-redux'
 import {
-  mouseDown, mouseUp, mouseMove
+  mouseDown, mouseUp, mouseMove, scroll
 } from '../../store/game/actions'
 
 const GamePage = (props) => {
@@ -45,12 +45,15 @@ const GamePage = (props) => {
           dispatch(mouseMove(e.clientX, e.clientY))
         }
       }}
+      onWheel={(e) => {
+        dispatch(scroll(e.deltaY / -200))
+      }}
       >
       <Stage width={innerWidth} height={innerHeight}>
         <Layer>
           <Group
-            x={camera.x + innerWidth / 2}
-            y={camera.y + innerHeight / 2}
+            x={-1 * camera.x * camera.scale.x + innerWidth / 2}
+            y={-1 * camera.y * camera.scale.y + innerHeight / 2}
             offsetX={camera.x}
             offsetY={camera.y}
             scaleX={camera.scale.x}
