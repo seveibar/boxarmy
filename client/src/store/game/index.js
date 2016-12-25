@@ -97,8 +97,8 @@ const GamePageReducer = (state: any, action: any) => {
       }
       newPlayers[playerIndex] = myPlayer
 
-      const rdiff = (direction === "up" && -1) || (direction === "down" && 1) || 0
-      const cdiff = (direction === "right" && 1) || (direction === "left" && -1) || 0
+      const rdiff = (direction === 'up' && -1) || (direction === 'down' && 1) || 0
+      const cdiff = (direction === 'right' && 1) || (direction === 'left' && -1) || 0
 
       return {
         ...state,
