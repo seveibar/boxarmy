@@ -7,8 +7,12 @@ import {
   MOUSE_UP,
   MOUSE_MOVE,
   SCROLL,
-  CELL_SELECTED
+  CELL_SELECTED,
+  MOVE_SELECTED_CELL,
+  CLEAR_MOVES
 } from './constants'
+
+import lodash from 'lodash'
 
 const initialState = {
   boardState: boardStateExample,
@@ -22,7 +26,7 @@ const initialState = {
 
 const GamePageReducer = (state: any, action: any) => {
   if (!state) return initialState
-  const { camera, mouse } = state
+  const { boardState, playerIndex, camera, mouse, selectedCell } = state
   switch (action.type) {
     case MOUSE_DOWN:
       return {
@@ -68,6 +72,55 @@ const GamePageReducer = (state: any, action: any) => {
       return {
         ...state,
         selectedCell: { ri, ci }
+      }
+    case MOVE_SELECTED_CELL:
+
+      if (!selectedCell) return state
+
+      const { direction } = action
+      let newPlayers = [...boardState.players]
+      const myPlayer = lodash.cloneDeep(newPlayers[playerIndex])
+
+      // If the last move is on the same cell, just change it
+      const lastMove = myPlayer.moves.length > 0
+                          ? myPlayer.moves[myPlayer.moves.length - 1]
+                          : null
+      if (lastMove &&
+          lastMove.cell.x === selectedCell.ci &&
+          lastMove.cell.y === selectedCell.ri) {
+        lastMove.direction = direction
+      } else {
+        myPlayer.moves.push({
+          cell: { x: selectedCell.ci, y: selectedCell.ri },
+          direction
+        })
+      }
+      newPlayers[playerIndex] = myPlayer
+
+      const rdiff = (direction === "up" && -1) || (direction === "down" && 1) || 0
+      const cdiff = (direction === "right" && 1) || (direction === "left" && -1) || 0
+
+      return {
+        ...state,
+        selectedCell: {
+          ri: Math.min(Math.max(selectedCell.ri + rdiff, 0), boardState.size.y-1),
+          ci: Math.min(Math.max(selectedCell.ci + cdiff, 0), boardState.size.x-1)
+        },
+        boardState: {
+          ...boardState,
+          players: newPlayers
+        }
+      }
+    case CLEAR_MOVES:
+      let playersCopy = [...boardState.players]
+      playersCopy[playerIndex] = lodash.cloneDeep(boardState.players[playerIndex])
+      playersCopy[playerIndex].moves = []
+      return {
+        ...state,
+        boardState: {
+          ...boardState,
+          players: playersCopy
+        }
       }
     default:
       return initialState

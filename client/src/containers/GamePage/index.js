@@ -3,7 +3,8 @@ import { Layer, Stage, Group, Rect } from 'react-konva'
 import Cell from './Cell'
 import { connect } from 'react-redux'
 import {
-  mouseDown, mouseUp, mouseMove, scroll, cellSelected
+  mouseDown, mouseUp, mouseMove, scroll, cellSelected,
+  moveSelectedCell, clearMoves
 } from '../../store/game/actions'
 
 const GamePage = (props) => {
@@ -32,6 +33,36 @@ const GamePage = (props) => {
       })
     }
   }
+
+  // TODO this is a hacky fix b/c onKeyDown on the div didn't work
+  window.removeEventListener('keydown', window.keyEvent)
+  window.keyEvent = (e) => {
+    switch (e.keyCode) {
+      case 68: // d
+      case 39: // right-arrow
+        dispatch(moveSelectedCell('right'))
+        break
+      case 87: // w
+      case 38: // up-arrow
+        dispatch(moveSelectedCell('up'))
+        break
+      case 65: // a
+      case 37: // left-arrow
+        dispatch(moveSelectedCell('left'))
+        break
+      case 83: // s
+      case 40: // down-arrow
+        dispatch(moveSelectedCell('down'))
+        break
+      case 81:
+        dispatch(clearMoves())
+        break
+      default:
+        return
+    }
+  }
+  window.addEventListener('keydown', window.keyEvent)
+
   const { innerWidth, innerHeight } = window
   return (
     <div

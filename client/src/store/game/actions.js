@@ -5,7 +5,9 @@ import {
   MOUSE_UP,
   MOUSE_MOVE,
   SCROLL,
-  CELL_SELECTED
+  CELL_SELECTED,
+  MOVE_SELECTED_CELL,
+  CLEAR_MOVES
 } from './constants'
 
 export function mouseDown (x:number, y:number) {
@@ -26,4 +28,12 @@ export function scroll (amt: number) {
 
 export function cellSelected (ri:number, ci:number) {
   return { type: CELL_SELECTED, ri, ci }
+}
+
+export function moveSelectedCell (direction: "up"|"left"|"right"|"down") {
+  return { type: MOVE_SELECTED_CELL, direction }
+}
+
+export function clearMoves () {
+  return { type: CLEAR_MOVES }
 }
