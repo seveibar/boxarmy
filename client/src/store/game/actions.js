@@ -24,6 +24,6 @@ export function scroll (amt: number) {
   return { type: SCROLL, scrollAmount: amt }
 }
 
-export function cellSelected (x:number, y:number) {
-  return { type: CELL_SELECTED, x, y }
+export function cellSelected (ri:number, ci:number) {
+  return { type: CELL_SELECTED, ri, ci }
 }

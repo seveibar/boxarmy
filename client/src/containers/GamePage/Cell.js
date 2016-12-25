@@ -15,7 +15,7 @@ const ownerColors = [
 ]
 
 export const Cell = (props) => {
-  const { x, y, owner, force, type, direction, onClick } = props
+  const { x, y, owner, force, type, direction, onClick, selected } = props
 
   let background
   switch (type) {
@@ -65,6 +65,7 @@ export const Cell = (props) => {
       <Rect
         x={0} y={0} fill={ownerColors[owner]}
         width={100} height={100}
+        opacity={selected ? .75 : 1}
         onClick={() => onClick()}
         stroke={'black'}
         strokeWidth={3}

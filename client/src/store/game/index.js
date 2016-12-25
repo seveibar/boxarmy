@@ -7,7 +7,7 @@ import {
   MOUSE_UP,
   MOUSE_MOVE,
   SCROLL,
-  SELECT_CELL
+  CELL_SELECTED
 } from './constants'
 
 const initialState = {
@@ -62,6 +62,12 @@ const GamePageReducer = (state: any, action: any) => {
             y: Math.max(camera.scale.y + action.scrollAmount * camera.scale.y / 4, 0.1)
           }
         }
+      }
+    case CELL_SELECTED:
+      const {ri, ci} = action
+      return {
+        ...state,
+        selectedCell: { ri, ci }
       }
     default:
       return initialState

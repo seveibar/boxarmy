@@ -8,7 +8,7 @@ import {
 
 const GamePage = (props) => {
   const { dispatch } = props
-  const { boardState, playerIndex, camera, mouse } = props.state
+  const { boardState, playerIndex, camera, mouse, selectedCell } = props.state
   const { cells, players } = boardState
   const myPlayer = players[playerIndex]
 
@@ -21,13 +21,14 @@ const GamePage = (props) => {
         const { x, y } = move.cell
         return ri === y && ci === x
       })
+      const selected = selectedCell && (selectedCell.ci == ci && selectedCell.ri == ri)
       let direction
       if (moveUsingCell) {
         direction = moveUsingCell.direction
       }
       renderCells.push({
         x: ci * 100, y: ri * 100, owner, force, type, direction,
-        key: [ci, ri].join(',')
+        ri, ci, selected, key: [ci, ri].join(',')
       })
     }
   }
@@ -62,7 +63,7 @@ const GamePage = (props) => {
             renderCells.map((renderCell) => (
               <Cell
                 onClick={() => {
-                  dispatch(cellSelected(renderCell.x, renderCell.y))
+                  dispatch(cellSelected(renderCell.ri, renderCell.ci))
                 }}
                 {...renderCell}
               />
