@@ -1,9 +1,9 @@
 import React from 'react'
-import { Layer, Stage, Group } from 'react-konva'
+import { Layer, Stage, Group, Rect } from 'react-konva'
 import Cell from './Cell'
 import { connect } from 'react-redux'
 import {
-  mouseDown, mouseUp, mouseMove, scroll
+  mouseDown, mouseUp, mouseMove, scroll, cellSelected
 } from '../../store/game/actions'
 
 const GamePage = (props) => {
@@ -41,7 +41,7 @@ const GamePage = (props) => {
         dispatch(mouseUp(e.clientX, e.clientY))
       }}
       onMouseMove={(e) => {
-        if (mouse.down){
+        if (mouse.down) {
           dispatch(mouseMove(e.clientX, e.clientY))
         }
       }}
@@ -59,10 +59,15 @@ const GamePage = (props) => {
             scaleX={camera.scale.x}
             scaleY={camera.scale.y}>
             {
-              renderCells.map((renderCell) => (
-                <Cell {...renderCell} />
-              ))
-            }
+            renderCells.map((renderCell) => (
+              <Cell
+                onClick={() => {
+                  dispatch(cellSelected(renderCell.x, renderCell.y))
+                }}
+                {...renderCell}
+              />
+            ))
+          }
           </Group>
         </Layer>
       </Stage>

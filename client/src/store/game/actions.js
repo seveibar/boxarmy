@@ -4,7 +4,8 @@ import {
   MOUSE_DOWN,
   MOUSE_UP,
   MOUSE_MOVE,
-  SCROLL
+  SCROLL,
+  CELL_SELECTED
 } from './constants'
 
 export function mouseDown (x:number, y:number) {
@@ -21,4 +22,8 @@ export function mouseUp (x:number, y:number) {
 
 export function scroll (amt: number) {
   return { type: SCROLL, scrollAmount: amt }
+}
+
+export function cellSelected (x:number, y:number) {
+  return { type: CELL_SELECTED, x, y }
 }

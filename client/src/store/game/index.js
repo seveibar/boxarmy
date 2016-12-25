@@ -1,12 +1,13 @@
 // @flow
 
-import boardStateExample from '../../../../game/__tests__/large_state_example.json'
+import boardStateExample from '../../../../game/__tests__/state_example.json'
 
 import {
   MOUSE_DOWN,
   MOUSE_UP,
   MOUSE_MOVE,
-  SCROLL
+  SCROLL,
+  SELECT_CELL
 } from './constants'
 
 const initialState = {
@@ -57,8 +58,8 @@ const GamePageReducer = (state: any, action: any) => {
         camera: {
           ...camera,
           scale: {
-            x: Math.max(camera.scale.x + action.scrollAmount * camera.scale.x / 4, .1),
-            y: Math.max(camera.scale.y + action.scrollAmount * camera.scale.y / 4, .1)
+            x: Math.max(camera.scale.x + action.scrollAmount * camera.scale.x / 4, 0.1),
+            y: Math.max(camera.scale.y + action.scrollAmount * camera.scale.y / 4, 0.1)
           }
         }
       }
