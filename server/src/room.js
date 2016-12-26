@@ -3,14 +3,16 @@
 import { GameManager, requiredPlayers } from './game'
 import type { GameType, PlayerInfo } from './game'
 import { generate as getUniqueID } from 'shortid'
+import moment from 'moment'
 
 type SessionId = string
 
-type UserStatus = "idle"|"waiting"|"in game"
+type UserStatus = "waiting"|"in game"
 
 type Sessions = {
   [key: SessionId]: {
     status: UserStatus,
+    lastPing: ?string,
     gameid: ?string,
     gameType: GameType
   }
@@ -25,12 +27,16 @@ export class RoomManager {
     this.gameManager = new GameManager(redis)
   }
 
-  async setUserStatus (roomid:string, sessionId:string, statusInfo: {
+  /*
+   * Called when user requests to change status or game type while in
+   * waiting room.
+   */
+  async setUserStatus (roomid:string, sessionId:string, changeInfo: {
     gameType: ?GameType,
     status: ?UserStatus
   }) {
     const { redis } = this
-    const { gameType, status } = statusInfo
+    const { gameType, status } = changeInfo
 
     let lock = await redis.lock(`room:${roomid}:lock`)
     let sessions = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
@@ -49,6 +55,7 @@ export class RoomManager {
     if (gameType) {
       sessions[sessionId].gameType = gameType
     }
+    sessions[sessionId].lastPing = moment().format()
 
     sessions = await this._updateSessions(sessions)
 
@@ -57,6 +64,9 @@ export class RoomManager {
     return sessions[sessionId]
   }
 
+  /*
+   * Gets the user status in the waiting room
+   */
   async getUserStatus (roomid:string, sessionId:SessionId, gameType: ?GameType = null) {
     const { redis } = this
     let lock = await redis.lock(`room:${roomid}:lock`)
@@ -65,17 +75,29 @@ export class RoomManager {
       await lock.unlock()
       throw new Error('User has not entered room')
     }
+    sessions[sessionId].lastPing = moment().format()
     sessions = await this._updateSessions(sessions)
     await redis.set(`room:${roomid}:sessions`, JSON.stringify(sessions))
     await lock.unlock()
     return sessions[sessionId]
   }
 
+  /*
+   * Internally used to update all the users in the waiting room. This is
+   * called on any kind of change to the room, e.g. a user leaving.
+   */
   async _updateSessions (sessions: Sessions): Sessions {
     const { redis, gameManager } = this
     const gameWaitingLists:{
       [key: GameType]: Array<SessionId>
     } = {}
+
+    // Remove any users that haven't pinged in some time
+    for (let sessionId in sessions) {
+      if (moment().diff(moment(sessions[sessionId].lastPing), 's') > 2) {
+        delete sessions[sessionId]
+      }
+    }
 
     // Add waiting users to their game waiting lists
     Object.keys(sessions).forEach((sessionId) => {

@@ -20,10 +20,8 @@ describe('room tests', () => {
     const userStatus = await room.setUserStatus('room1', 'user1', {
       gameType: '1v1'
     })
-    expect(userStatus).toEqual({
-      status: 'waiting',
-      gameType: '1v1'
-    })
+    expect(userStatus.status).toEqual('waiting')
+    expect(userStatus.gameType).toEqual('1v1')
   })
 
   it('should allow second player to join and start game', async () => {
