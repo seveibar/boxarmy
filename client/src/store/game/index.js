@@ -103,8 +103,8 @@ const GamePageReducer = (state: any, action: any) => {
       return {
         ...state,
         selectedCell: {
-          ri: Math.min(Math.max(selectedCell.ri + rdiff, 0), boardState.size.y-1),
-          ci: Math.min(Math.max(selectedCell.ci + cdiff, 0), boardState.size.x-1)
+          ri: Math.min(Math.max(selectedCell.ri + rdiff, 0), boardState.size.y - 1),
+          ci: Math.min(Math.max(selectedCell.ci + cdiff, 0), boardState.size.x - 1)
         },
         boardState: {
           ...boardState,
