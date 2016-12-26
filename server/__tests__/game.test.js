@@ -35,4 +35,17 @@ describe('game management tests', () => {
     const nextState = await game.getLatestState('game_01')
     expect(nextState.ticks).toBeGreaterThan(initialState.ticks)
   })
+
+  it('should allow players to add moves', async () => {
+    const finalState = await game.addMove('game_01', 1, {
+      cell: { x: 0, y: 0 },
+      direction: 'down'
+    })
+    expect(finalState.players[1].moves.length).toBe(1)
+  })
+
+  it('should allow players to clear moves', async () => {
+    const finalState = await game.clearMoves('game_01', 1)
+    expect(finalState.players[1].moves.length).toBe(0)
+  })
 })

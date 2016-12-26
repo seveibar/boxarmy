@@ -79,7 +79,7 @@ export class GameManager {
 
   async clearMoves (gameId: string, playerIndex: number) {
     let game = await this.alterGame(gameId, (game) => {
-      game.clearMoves()
+      game.clearMoves(playerIndex)
     })
 
     return game.getState()
