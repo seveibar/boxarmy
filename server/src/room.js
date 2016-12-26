@@ -61,9 +61,9 @@ export class RoomManager {
     const { redis } = this
     let lock = await redis.lock(`room:${roomid}:lock`)
     let sessions = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
-    if (!sessions[sessionId]){
+    if (!sessions[sessionId]) {
       await lock.unlock()
-      throw new Error("User has not entered room")
+      throw new Error('User has not entered room')
     }
     sessions = await this._updateSessions(sessions)
     await redis.set(`room:${roomid}:sessions`, JSON.stringify(sessions))

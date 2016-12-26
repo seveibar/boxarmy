@@ -3,7 +3,7 @@ import { RoomManager } from '../src/room'
 import { getRedisClient } from '../src/redis'
 
 describe('room tests', () => {
-  let room,redis
+  let room, redis
 
   beforeAll(async () => {
     redis = await getRedisClient()

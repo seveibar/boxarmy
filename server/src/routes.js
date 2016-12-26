@@ -28,10 +28,10 @@ export default async function setupRoutes (app: $Application) {
       return res.json({'success': false, 'message': 'must supply session id'})
     }
 
-    if (roomid){
+    if (roomid) {
       const lock = await redis.lock(`room:${roomid}:lock`)
       await lock.unlock()
-    }else{
+    } else {
       // get the public room
 
     }

@@ -2,7 +2,6 @@ import { GameManager } from '../src/game'
 import { getRedisClient } from '../src/redis'
 
 describe('game management tests', () => {
-
   let game, redis
   beforeAll(async () => {
     redis = await getRedisClient()
@@ -10,8 +9,8 @@ describe('game management tests', () => {
     game = new GameManager(redis)
   })
 
+  const gameId = 'game_01'
   it('should allow game creation', async () => {
-    const gameId = 'game_01'
     await game.initializeGame({
       gameId,
       type: '1v1',
@@ -30,4 +29,10 @@ describe('game management tests', () => {
     })
   })
 
+  it('should progress the game as players request updates', async () => {
+    const initialState = await game.getLatestState('game_01')
+    await new Promise((resolve) => setTimeout(resolve, 501))
+    const nextState = await game.getLatestState('game_01')
+    expect(nextState.ticks).toBeGreaterThan(initialState.ticks)
+  })
 })
