@@ -28,7 +28,7 @@
     "jest": "~17.0.3"
   },
   "scripts": {
-    "start": "npm build && node dist/src/index.js",
+    "start": "npm run build && node dist/src/index.js",
     "clean": "rm -rf coverage dist tmp",
     "lint": "eslint .",
     "postlint": "npm run typecheck",
@@ -63,6 +63,7 @@
     "eslint-plugin-react": "^6.8.0",
     "eslint-plugin-standard": "^2.0.1",
     "express": "^4.14.0",
+    "http-proxy-middleware": "^0.17.3",
     "moment": "^2.17.1",
     "range": "^0.0.3",
     "redis": "^2.6.3",
