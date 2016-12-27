@@ -1,7 +1,9 @@
 // @flow
 
 export type InitParams = {
-  size: {x: number, y:number}
+  size: {x: number, y:number},
+  type: string,
+  players: Array<{ name: string, start: { x: number, y:number } }>
 };
 
 export type Move = {
@@ -21,6 +23,8 @@ export type Cell = {
 };
 
 export type GameState = {
+  ticks: number,
+  size: { x:number, y:number },
   players: Array<Player>,
   cells: Array<Array<Cell>>
 };

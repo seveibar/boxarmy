@@ -1,4 +1,4 @@
-/** @flow */
+// @flow
 
 import { range } from 'range';
 
@@ -14,7 +14,13 @@ export default class Game {
 
   init(initObject: InitParams) {
 
-    const { size, players } = initObject;
+    const { players, type } = initObject;
+
+    const squareSize = Math.floor(Math.random() * 10);
+    const size = initObject.size || {
+      x: squareSize,
+      y: squareSize
+    };
 
     this.state = {
       ticks: 0,
@@ -30,11 +36,49 @@ export default class Game {
     };
 
     // Update cells where the player starts with the king
+    players.forEach((player, index) => {
+      const start = player.start || {
+        x: Math.floor(Math.random() * size.x),
+        y: Math.floor(Math.random() * size.y),
+      };
+      this.state.cells[start.x][start.y] = {
+        type: 'king',
+        owner: index + 1,
+        force: 1
+      };
+    });
+  }
 
+  getCell(x:number, y:number) {
+    return this.state.cells[x][y]
   }
 
   tick() {
-    this.state.ticks += 1;
+    const { state } = this;
+    state.ticks += 1;
+
+    // Increment all king cells every tick
+    state.cells.forEach(row => row.forEach((cell) => {
+      if (cell.owner !== 0 && cell.type === 'king') {
+        cell.force += 1;
+      }
+    }));
+
+    // Increment all land cells every 30 seconds (60 ticks)
+    if (state.ticks % 60 === 0) {
+      state.cells.forEach(row => row.forEach((cell) => {
+        if (cell.owner !== 0 && cell.type === 'land') {
+          cell.force += 1;
+        }
+      }));
+    }
+
+    // Move players, each player gets to execute one possible move
+    state.players.slice(1).forEach((player) => {
+      const move = player.moves[0]
+      const fromCell = { x:
+    });
+
   }
 
   addMove(playerIndex: number, move: Move) {
