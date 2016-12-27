@@ -6,12 +6,14 @@ import { fork } from 'redux-saga/effects'
 import { reducer as form } from 'redux-form'
 import menu from './menu'
 import game from './game'
+import auth from './auth'
 
 const reducers = {
   routing,
   form,
   menu,
-  game
+  game,
+  auth
 }
 
 const sagas = []

@@ -16,6 +16,7 @@ const initialState = {
 }
 
 const MenuPageReducer = (state: any, action: any) => {
+  if (state === undefined) return initialState
   switch (action.type) {
     case MODE_SELECTED:
       return {
@@ -39,7 +40,7 @@ const MenuPageReducer = (state: any, action: any) => {
         submenu: 'in game'
       }
     default:
-      return initialState
+      return state
   }
 }
 

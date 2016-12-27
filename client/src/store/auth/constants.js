@@ -1,0 +1,2 @@
+export const RECEIVED_SESSION_ID = 'auth/RECEIVED_SESSION_ID'
+export const SET_NICKNAME = 'auth/SET_NICKNAME'

@@ -6,26 +6,27 @@ import axios from 'axios'
 import {
   MODE_SELECTED
 } from './constants'
+import {
+  receivedSessionId
+} from '../auth/actions'
 
-const apiURL = 'http://127.0.0.1:3001/api'
+const apiURL = '/api'
 
 export function* sendSelectionInformation () {
   while (true) {
     yield take(MODE_SELECTED)
-    const { menu, sessionId } = yield select((state) => ({
+    const { menu, sessionId, nick } = yield select((state) => ({
       menu: state.menu,
-      sessionId: state.sessionId
+      sessionId: state.auth.sessionId,
+      nick: state.auth.nick
     }))
     if (!sessionId) {
-      const response = yield call(axios, `${apiURL}/sessionid`)
-      console.log(response)
+      const response = yield call(axios, `${apiURL}/sessionid`, {
+        nick
+      })
+      const { sessionId, nick } = response.data
+      yield put(receivedSessionId(sessionId, nick))
     }
-    // yield call(request.post, {
-    //   url: `${apiURL}/room`,
-    //   qs: {
-    //
-    //   }
-    // })
   }
 }
 
@@ -41,7 +42,7 @@ export function* pollRoomStatus () {
 
 export default function* saga () {
   yield [
-    fork(sendSelectionInformation)
-    // pollRoomStatus()
+    fork(sendSelectionInformation),
+    fork(pollRoomStatus)
   ]
 }
