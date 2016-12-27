@@ -18,7 +18,7 @@ export default class Game {
 
     const { players, type } = initObject;
 
-    const squareSize = Math.floor(Math.random() * 10);
+    const squareSize = Math.floor(Math.random() * 10) + 7;
     const size = initObject.size || {
       x: squareSize,
       y: squareSize
@@ -33,7 +33,7 @@ export default class Game {
         name: player.name,
         moves: []
       }))),
-      cells: range(0,size.x).map(row => range(0, size.y).map(col =>
+      cells: range(0,size.y).map(row => range(0, size.x).map(col =>
         ({ type: 'land', owner: 0, force: 0 })))
     };
 
@@ -53,18 +53,18 @@ export default class Game {
 
   getCell({ cell: { x, y } }) : CoordinateCell {
     return {
-      cell: this.state.cells[x][y], x, y
+      cell: this.state.cells[y][x], x, y
     };
   }
 
   getTargetCell({ cell: { x, y }, direction }) : CoordinateCell {
     const { size } = this.state;
     const dx = (direction === 'right' && 1 || 0) - (direction === 'left' && 1 || 0);
-    const dy = (direction === 'up' && 1 || 0) - (direction === 'down' && 1 || 0);
+    const dy = (direction === 'down' && 1 || 0) - (direction === 'up' && 1 || 0);
     return this.getCell({
       cell: {
-        x: Math.min(Math.max(x + dx, 0), size.x),
-        y: Math.min(Math.max(y + dy, 0), size.y)
+        x: Math.min(Math.max(x + dx, 0), size.x - 1),
+        y: Math.min(Math.max(y + dy, 0), size.y - 1)
       }
     });
   }
@@ -113,7 +113,6 @@ export default class Game {
         }
 
         // Player must own cell
-        console.log(playerIndex);
         if (fromCell.cell.owner !== playerIndex) {
           continue;
         }
@@ -125,9 +124,12 @@ export default class Game {
           // Moving into enemy cell
           if (toCell.cell.force < fromCell.cell.force - 1) {
             toCell.cell.owner = fromCell.cell.owner;
+            toCell.cell.force = (fromCell.cell.force - 1) - toCell.cell.force;
+            fromCell.cell.force = 1;
+          } else {
+            toCell.cell.force = toCell.cell.force - (fromCell.cell.force - 1);
+            fromCell.cell.force = 1;
           }
-          fromCell.cell.force = 1;
-          toCell.cell.force -= fromCell.cell.force - 1;
         }
 
 

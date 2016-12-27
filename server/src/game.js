@@ -15,11 +15,6 @@ export const requiredPlayers = {
   '1v1': 2
 }
 
-export const gameSize = {
-  'FFA8': { 'x': 10, 'y': 10 },
-  '1v1': { 'x': 6, 'y': 6 }
-}
-
 export const gameTypeUpdateTime = {
   'FFA8': 500,
   '1v1': 500
@@ -45,7 +40,7 @@ export class GameManager {
     // Initialize the game
     let game = new Game()
     game.init({
-      size: gameSize[type],
+      type,
       players: players.map((player) => ({ name: player.nick }))
     })
 
