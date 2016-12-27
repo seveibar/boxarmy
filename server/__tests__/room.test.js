@@ -29,10 +29,10 @@ describe('room tests', () => {
       gameType: '1v1'
     })
     const userStatus = await room.getUserStatus('room1', 'user2', '1v1')
-    expect(userStatus.gameid).toBeDefined()
+    expect(userStatus.gameId).toBeDefined()
     expect(userStatus.status).toBe('in game')
-    const gameInfo = await redis.get(`game:${userStatus.gameid}:state`)
-    const gameSessions = await redis.get(`game:${userStatus.gameid}:sessions`)
+    const gameInfo = await redis.get(`game:${userStatus.gameId}:state`)
+    const gameSessions = await redis.get(`game:${userStatus.gameId}:sessions`)
     expect(gameInfo).toBeDefined()
     expect(JSON.parse(gameSessions)).toEqual({
       'user1': 1,

@@ -9,13 +9,15 @@ type SessionId = string
 
 type UserStatus = "waiting"|"in game"
 
-type Sessions = {
-  [key: SessionId]: {
-    status: UserStatus,
-    lastPing: ?string,
-    gameid: ?string,
-    gameType: GameType
-  }
+type SessionInfo = {
+  status: UserStatus,
+  lastPing: ?string,
+  gameId: ?string,
+  gameType: GameType
+}
+
+type SessionMap = {
+  [key: SessionId]: SessionInfo
 }
 
 export class RoomManager {
@@ -34,18 +36,17 @@ export class RoomManager {
   async setUserStatus (roomid:string, sessionId:string, changeInfo: {
     gameType: ?GameType,
     status: ?UserStatus
-  }) {
+  }): Promise<SessionInfo> {
     const { redis } = this
     const { gameType, status } = changeInfo
 
     let lock = await redis.lock(`room:${roomid}:lock`)
-    let sessions = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
+    let sessions: SessionMap = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
 
     // Create user session if it doesn't already exist
     if (!sessions[sessionId]) {
       sessions[sessionId] = {
-        status: 'waiting',
-        gameType: gameType
+        status: 'waiting'
       }
     }
 
@@ -55,8 +56,8 @@ export class RoomManager {
     if (gameType) {
       sessions[sessionId].gameType = gameType
     }
-    sessions[sessionId].lastPing = moment().format()
 
+    sessions[sessionId].lastPing = moment().format()
     sessions = await this._updateSessions(sessions)
 
     await redis.set(`room:${roomid}:sessions`, JSON.stringify(sessions))
@@ -67,7 +68,7 @@ export class RoomManager {
   /*
    * Gets the user status in the waiting room
    */
-  async getUserStatus (roomid:string, sessionId:SessionId, gameType: ?GameType = null) {
+  async getUserStatus (roomid:string, sessionId:SessionId): Promise<SessionInfo> {
     const { redis } = this
     let lock = await redis.lock(`room:${roomid}:lock`)
     let sessions = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
@@ -86,7 +87,7 @@ export class RoomManager {
    * Internally used to update all the users in the waiting room. This is
    * called on any kind of change to the room, e.g. a user leaving.
    */
-  async _updateSessions (sessions: Sessions): Sessions {
+  async _updateSessions (sessions: SessionMap): SessionMap {
     const { redis, gameManager } = this
     const gameWaitingLists:{
       [key: GameType]: Array<SessionId>
@@ -117,7 +118,6 @@ export class RoomManager {
 
         // Create player info for game and initialize game
         const playerInfos = await Promise.all(assignedPlayers.map(async (sid) => {
-          const playerSession = sessions[sid]
           return {
             sessionId: sid,
             nick: await redis.get(`session:${sid}:nick`)
@@ -134,7 +134,7 @@ export class RoomManager {
         // Mark each player as being in the game
         assignedPlayers.forEach((sid) => {
           sessions[sid].status = 'in game'
-          sessions[sid].gameid = gameId
+          sessions[sid].gameId = gameId
         })
       }
     }

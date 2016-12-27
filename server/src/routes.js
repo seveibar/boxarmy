@@ -1,13 +1,19 @@
 // @flow
 
-import type { $Application } from 'express'
 import { Router } from 'express'
+import type { $Application } from 'express'
 import { generate as getUniqueID } from 'shortid'
+
+import { RoomManager } from './room'
+import { GameManager } from './game'
 
 import { getRedisClient } from './redis'
 
 export default async function setupRoutes (app: $Application) {
   const redis = await getRedisClient()
+
+  const roomManager = new RoomManager(redis)
+  const gameManager = new GameManager(redis)
 
   const router = new Router()
 
@@ -22,18 +28,48 @@ export default async function setupRoutes (app: $Application) {
     res.json({ sessionId, nick })
   })
 
+  router.post('/room', async (req, res) => {
+    const { sessionid, roomid, gametype, status } = req.query
+    // sessionid: string, roomid:string, gametype:string, status:string
+    const result = await roomManager.setUserStatus(roomid || 'public', sessionid, {
+      status, gameType: gametype
+    })
+    res.json(result)
+  })
+
   router.get('/room', async (req, res) => {
     const { sessionid, roomid } = req.query
-    if (!sessionid) {
-      return res.json({'success': false, 'message': 'must supply session id'})
+    try {
+      const result = await roomManager.getUserStatus(roomid || 'public', sessionid)
+      res.json(result)
+    } catch (e) {
+      res.json({ error: e.toString() })
     }
+  })
 
-    if (roomid) {
-      const lock = await redis.lock(`room:${roomid}:lock`)
-      await lock.unlock()
-    } else {
-      // get the public room
+  router.get('/game', async (req, res) => {
+    const { sessionid, gameid } = req.query
+    try {
+      const result = await gameManager.getLatestStateForSession(gameid, sessionid)
+      res.json(result)
+    } catch (e) {
+      res.json({ error: e.toString() })
+    }
+  })
 
+  router.post('/game', async (req, res) => {
+    const { sessionid, gameid, type } = req.query
+    try {
+      let result
+      if (type === 'addMove') {
+        const { move } = req.query
+        result = await gameManager.addMoveForSession(gameid, sessionid, move)
+      } else if (type === 'clearMoves') {
+        result = await gameManager.clearMovesForSession(gameid, sessionid)
+      }
+      res.json(result)
+    } catch (e) {
+      res.json({ error: e.toString() })
     }
   })
 

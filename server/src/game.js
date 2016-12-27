@@ -28,7 +28,9 @@ export const gameTypeUpdateTime = {
 export class GameManager {
 
   resourceManager: ResourceManager
+  redis: any
   constructor (redis:any) {
+    this.redis = redis
     this.resourceManager = new ResourceManager(redis)
   }
 
@@ -70,11 +72,29 @@ export class GameManager {
     return game.getState()
   }
 
+  async getLatestStateForSession (gameId:string, playerSession:string) {
+    const gameSessions = await this.redis.get(`game:${gameId}:sessions`)
+    const playerIndex = JSON.parse(gameSessions)[playerSession]
+    return await this.getLatestState(gameId, playerIndex)
+  }
+
+  async addMoveForSession (gameId:string, sessionId:string, move:any) {
+    const gameSessions = await this.redis.get(`game:${gameId}:sessions`)
+    const playerIndex = JSON.parse(gameSessions)[sessionId]
+    return await this.addMove(gameId, playerIndex, move)
+  }
+
   async addMove (gameId: string, playerIndex: number, move: any) {
     const game = await this.alterGame(gameId, (game) => {
       game.addMove(playerIndex, move)
     })
     return game.getState()
+  }
+
+  async clearMovesForSession (gameId:string, sessionId:string) {
+    const gameSessions = await this.redis.get(`game:${gameId}:sessions`)
+    const playerIndex = JSON.parse(gameSessions)[sessionId]
+    return await this.clearMoves(gameId, playerIndex)
   }
 
   async clearMoves (gameId: string, playerIndex: number) {

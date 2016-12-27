@@ -91,8 +91,7 @@ declare class express$Response extends http$ClientRequest mixins express$Request
 
 declare type express$NextFunction = (err?: ?Error) => mixed;
 declare type express$Middleware =
-  ((req: express$Request, res: express$Response, next: express$NextFunction) => mixed) |
-  ((error: ?Error, req: express$Request, res: express$Response, next: express$NextFunction) => mixed);
+  ((req: express$Request, res: express$Response, next: express$NextFunction) => mixed);
 declare interface express$RouteMethodType<T> {
   (middleware: express$Middleware): T;
   (...middleware: Array<express$Middleware>): T;
@@ -137,6 +136,8 @@ declare class express$Router extends express$Route {
   use(middleware: express$Middleware): this;
   use(...middleware: Array<express$Middleware>): this;
   use(path: string|RegExp|string[], ...middleware: Array<express$Middleware>): this;
+  get(path: string|RegExp|string[], ...middleware: Array<express$Middleware>): this;
+  post(path: string|RegExp|string[], ...middleware: Array<express$Middleware>): this;
   use(path: string, router: express$Router): this;
 }
 
