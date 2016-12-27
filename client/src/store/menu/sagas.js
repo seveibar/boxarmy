@@ -15,28 +15,43 @@ const apiURL = '/api'
 export function* sendSelectionInformation () {
   while (true) {
     yield take(MODE_SELECTED)
-    const { menu, sessionId, nick } = yield select((state) => ({
+    let { menu, sessionId, nick } = yield select((state) => ({
       menu: state.menu,
       sessionId: state.auth.sessionId,
       nick: state.auth.nick
     }))
     if (!sessionId) {
-      const response = yield call(axios, `${apiURL}/sessionid`, {
-        nick
-      })
-      const { sessionId, nick } = response.data
-      yield put(receivedSessionId(sessionId, nick))
+      const getParams = nick ? `nick=${encodeURIComponent(nick)}` : ''
+      const response = yield call(axios, `${apiURL}/sessionid?${getParams}`)
+      yield put(receivedSessionId(response.data.sessionId, response.data.nick))
+      sessionId = response.data.sessionId
     }
+
+    // tell the room we're ready for a game
+    const roomInfo = yield call(axios.post, `${apiURL}/room`, {
+      sessionid: sessionId,
+      gametype: menu.mode
+    })
+
+    console.log(roomInfo)
   }
 }
 
 export function* pollRoomStatus () {
   while (true) {
-    const menu = yield select((state) => state.menu)
+    const { menu, sessionId } = yield select((state) => ({
+      menu: state.menu,
+      sessionId: state.auth.sessionId
+    }))
     if (menu.submenu === 'waiting') {
-      // yield call(request,
+      let getParams = [
+        menu.roomId ? `roomid=${encodeURIComponent(menu.roomId)}` : '',
+        `sessionid=${sessionId}`
+      ].join('&')
+      const response = yield call(axios, `${apiURL}/room?${getParams}`)
+      console.log(response)
     }
-    yield delay(400)
+    yield delay(4000)
   }
 }
 

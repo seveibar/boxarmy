@@ -6,6 +6,9 @@ import {
   selectMode,
   goToMain
 } from 'store/menu/actions'
+import {
+  setNickname
+} from 'store/auth/actions'
 
 const MenuPage = (props: any) => {
   const { state, dispatch } = props
@@ -17,6 +20,7 @@ const MenuPage = (props: any) => {
       main = (
         <div>
           <div> { 'intro' } </div>
+          <input onChange={(e) => dispatch(setNickname(e.target.value))} />
           <button
             onClick={
               () => dispatch(selectPlay())

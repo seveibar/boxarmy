@@ -5,6 +5,7 @@ import setupAPIRoutes from './routes'
 import { start as startClient } from 'generals-client'
 import getConfig from './config'
 import proxy from 'http-proxy-middleware'
+import bodyParser from 'body-parser'
 
 export async function serve (options) {
   console.log('starting generals server')
@@ -18,6 +19,8 @@ export async function serve (options) {
 
   let app = express()
   let server = Server(app)
+
+  app.use(bodyParser.json())
 
   server.listen(8080)
 

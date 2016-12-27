@@ -29,7 +29,11 @@ export default async function setupRoutes (app: $Application) {
   })
 
   router.post('/room', async (req, res) => {
-    const { sessionid, roomid, gametype, status } = req.query
+    const { sessionid, roomid, gametype, status } = {
+      ...req.query,
+      ...req.params,
+      ...req.body
+    }
     // sessionid: string, roomid:string, gametype:string, status:string
     const result = await roomManager.setUserStatus(roomid || 'public', sessionid, {
       status, gameType: gametype
