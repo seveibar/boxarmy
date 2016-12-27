@@ -1,7 +1,7 @@
 {
-  "name": "gederals",
+  "name": "generals-client",
   "version": "0.1.0",
-  "private": true,
+  "main": "./server.js",
   "scripts": {
     "start": "node server",
     "test": "jest",
