@@ -4,7 +4,7 @@ import Cell from './Cell'
 import { connect } from 'react-redux'
 import {
   mouseDown, mouseUp, mouseMove, scroll, cellSelected,
-  moveSelectedCell, clearMoves
+  moveCell, clearMoves
 } from '../../store/game/actions'
 
 const GamePage = (props) => {
@@ -40,19 +40,19 @@ const GamePage = (props) => {
     switch (e.keyCode) {
       case 68: // d
       case 39: // right-arrow
-        dispatch(moveSelectedCell('right'))
+        dispatch(moveCell('right', selectedCell))
         break
       case 87: // w
       case 38: // up-arrow
-        dispatch(moveSelectedCell('up'))
+        dispatch(moveCell('up', selectedCell))
         break
       case 65: // a
       case 37: // left-arrow
-        dispatch(moveSelectedCell('left'))
+        dispatch(moveCell('left', selectedCell))
         break
       case 83: // s
       case 40: // down-arrow
-        dispatch(moveSelectedCell('down'))
+        dispatch(moveCell('down', selectedCell))
         break
       case 81:
         dispatch(clearMoves())

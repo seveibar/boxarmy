@@ -8,8 +8,10 @@ import {
   MOUSE_MOVE,
   SCROLL,
   CELL_SELECTED,
-  MOVE_SELECTED_CELL,
-  CLEAR_MOVES
+  MOVE_CELL,
+  CLEAR_MOVES,
+  START_GAME,
+  UPDATE_STATE
 } from './constants'
 
 import lodash from 'lodash'
@@ -73,11 +75,11 @@ const GamePageReducer = (state: any, action: any) => {
         ...state,
         selectedCell: { ri, ci }
       }
-    case MOVE_SELECTED_CELL:
+    case MOVE_CELL:
 
       if (!selectedCell) return state
 
-      const { direction } = action
+      const { direction, cell } = action
       let newPlayers = [...boardState.players]
       const myPlayer = lodash.cloneDeep(newPlayers[playerIndex])
 
@@ -86,12 +88,12 @@ const GamePageReducer = (state: any, action: any) => {
                           ? myPlayer.moves[myPlayer.moves.length - 1]
                           : null
       if (lastMove &&
-          lastMove.cell.x === selectedCell.ci &&
-          lastMove.cell.y === selectedCell.ri) {
+          lastMove.cell.x === cell.ci &&
+          lastMove.cell.y === cell.ri) {
         lastMove.direction = direction
       } else {
         myPlayer.moves.push({
-          cell: { x: selectedCell.ci, y: selectedCell.ri },
+          cell: { x: cell.ci, y: cell.ri },
           direction
         })
       }
@@ -103,8 +105,8 @@ const GamePageReducer = (state: any, action: any) => {
       return {
         ...state,
         selectedCell: {
-          ri: Math.min(Math.max(selectedCell.ri + rdiff, 0), boardState.size.y - 1),
-          ci: Math.min(Math.max(selectedCell.ci + cdiff, 0), boardState.size.x - 1)
+          ri: Math.min(Math.max(cell.ri + rdiff, 0), boardState.size.y - 1),
+          ci: Math.min(Math.max(cell.ci + cdiff, 0), boardState.size.x - 1)
         },
         boardState: {
           ...boardState,
@@ -121,6 +123,18 @@ const GamePageReducer = (state: any, action: any) => {
           ...boardState,
           players: playersCopy
         }
+      }
+    case START_GAME:
+      return {
+        ...state,
+        gameId: action.gameId,
+        gameType: action.gameType,
+        playerIndex: action.playerIndex
+      }
+    case UPDATE_STATE:
+      return {
+        ...state,
+        boardState: action.state
       }
     default:
       return initialState

@@ -2,6 +2,7 @@
 
 import { select, put, call, fork, take } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+import { push } from 'react-router-redux'
 import axios from 'axios'
 import {
   MODE_SELECTED
@@ -9,6 +10,10 @@ import {
 import {
   receivedSessionId
 } from '../auth/actions'
+
+import {
+  startGame
+} from '../game/actions'
 
 const apiURL = '/api'
 
@@ -32,8 +37,6 @@ export function* sendSelectionInformation () {
       sessionid: sessionId,
       gametype: menu.mode
     })
-
-    console.log(roomInfo)
   }
 }
 
@@ -49,7 +52,12 @@ export function* pollRoomStatus () {
         `sessionid=${sessionId}`
       ].join('&')
       const response = yield call(axios, `${apiURL}/room?${getParams}`)
-      console.log(response)
+      const { gameId, gameType, status, playerIndex } = response.data
+
+      if (status === 'in game') {
+        yield put(push('/game'))
+        yield put(startGame(gameId, gameType, playerIndex))
+      }
     }
     yield delay(4000)
   }

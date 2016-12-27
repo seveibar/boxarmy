@@ -18,6 +18,7 @@ export default class Game {
 
     this.state = {
       ticks: 0,
+      size,
       players: [
         { name: 'neutral', moves: [] },
       ].concat(players.map(player => ({

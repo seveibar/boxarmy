@@ -13,7 +13,8 @@
     "__PROD__": true,
     "__DEBUG__": true,
     "__COVERAGE__": true,
-    "__BASENAME__": true
+    "__BASENAME__": true,
+    "Generator": true
   },
   "rules": {
     "jsx-quotes": [1, "prefer-double"],
@@ -25,6 +26,7 @@
     "arrow-parens": [
       1
     ],
+    'no-unused-vars': 1,
     "object-property-newline": 1,
     "keyword-spacing": 1,
     "space-before-blocks": [1],

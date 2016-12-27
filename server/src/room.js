@@ -13,7 +13,8 @@ type SessionInfo = {
   status: UserStatus,
   lastPing: ?string,
   gameId: ?string,
-  gameType: GameType
+  gameType: GameType,
+  playerIndex: ?number
 }
 
 type SessionMap = {
@@ -58,7 +59,6 @@ export class RoomManager {
 
     sessions[sessionId].lastPing = moment().format()
     sessions = await this._updateSessions(sessions)
-
     await redis.set(`room:${roomid}:sessions`, JSON.stringify(sessions))
     await lock.unlock()
     return sessions[sessionId]
@@ -93,11 +93,11 @@ export class RoomManager {
     } = {}
 
     // Remove any users that haven't pinged in some time
-    for (let sessionId in sessions) {
-      if (moment().diff(moment(sessions[sessionId].lastPing), 's') > 2) {
-        delete sessions[sessionId]
-      }
-    }
+    // for (let sessionId in sessions) {
+    //   if (moment().diff(moment(sessions[sessionId].lastPing), 's') > 2) {
+    //     delete sessions[sessionId]
+    //   }
+    // }
 
     // Add waiting users to their game waiting lists
     Object.keys(sessions).forEach((sessionId) => {
@@ -131,9 +131,10 @@ export class RoomManager {
         })
 
         // Mark each player as being in the game
-        assignedPlayers.forEach((sid) => {
+        assignedPlayers.forEach((sid, index) => {
           sessions[sid].status = 'in game'
           sessions[sid].gameId = gameId
+          sessions[sid].playerIndex = index + 1
         })
       }
     }

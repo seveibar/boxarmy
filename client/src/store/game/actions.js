@@ -6,9 +6,10 @@ import {
   MOUSE_MOVE,
   SCROLL,
   CELL_SELECTED,
-  MOVE_SELECTED_CELL,
+  MOVE_CELL,
   CLEAR_MOVES,
-  START_GAME
+  START_GAME,
+  UPDATE_STATE
 } from './constants'
 
 export function mouseDown (x:number, y:number) {
@@ -31,14 +32,18 @@ export function cellSelected (ri:number, ci:number) {
   return { type: CELL_SELECTED, ri, ci }
 }
 
-export function moveSelectedCell (direction: "up"|"left"|"right"|"down") {
-  return { type: MOVE_SELECTED_CELL, direction }
+export function moveCell (direction: "up"|"left"|"right"|"down", cell: {ci: number, ri: number}) {
+  return { type: MOVE_CELL, direction, cell }
 }
 
 export function clearMoves () {
   return { type: CLEAR_MOVES }
 }
 
-export function startGame () {
-  return { type: START_GAME }
+export function startGame (gameId: string, type: string, playerIndex: number) {
+  return { type: START_GAME, gameId, playerIndex }
+}
+
+export function updateState (newGameState: any) {
+  return { type: UPDATE_STATE, state: newGameState }
 }

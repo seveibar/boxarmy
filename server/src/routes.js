@@ -62,11 +62,14 @@ export default async function setupRoutes (app: $Application) {
   })
 
   router.post('/game', async (req, res) => {
-    const { sessionid, gameid, type } = req.query
+    const { sessionid, gameid, type, move } = {
+      ...req.query,
+      ...req.params,
+      ...req.body
+    }
     try {
       let result
       if (type === 'addMove') {
-        const { move } = req.query
         result = await gameManager.addMoveForSession(gameid, sessionid, move)
       } else if (type === 'clearMoves') {
         result = await gameManager.clearMovesForSession(gameid, sessionid)
