@@ -73,5 +73,10 @@ export default async function setupRoutes (app: $Application) {
     }
   })
 
-  app.use('/api', router)
+  app.use('/api', router, (err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).json({
+      error: err.stack
+    })
+  })
 }

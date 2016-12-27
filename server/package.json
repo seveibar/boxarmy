@@ -35,7 +35,7 @@
     "typecheck": "flow check",
     "pretest": "npm run lint",
     "test": "npm run test-only",
-    "test-only": "jest --runInBand --coverage",
+    "test-only": "jest --runInBand",
     "test:watch": "jest --runInBand --watch",
     "build": "babel src/**/*.js -d dist",
     "build:watch": "babel --watch src/**/*.js -d dist"
@@ -58,6 +58,7 @@
     ]
   },
   "dependencies": {
+    "babel-preset-stage-1": "^6.16.0",
     "babel-runtime": "~6.20.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "^6.8.0",

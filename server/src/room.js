@@ -39,7 +39,6 @@ export class RoomManager {
   }): Promise<SessionInfo> {
     const { redis } = this
     const { gameType, status } = changeInfo
-
     let lock = await redis.lock(`room:${roomid}:lock`)
     let sessions: SessionMap = JSON.parse(await redis.get(`room:${roomid}:sessions`)) || {}
 

@@ -6,10 +6,12 @@ import { getRedisClient } from '../src/redis'
 
 describe('basic connection and response tests', async () => {
   let server, redis
-  const apiURL = 'http://127.0.0.1:3001/api'
+  const apiURL = 'http://127.0.0.1:8080/api'
 
   beforeAll(async () => {
-    server = await serve()
+    server = await serve({
+      proxyClient: false
+    })
     redis = await getRedisClient()
     await redis.flush()
   })

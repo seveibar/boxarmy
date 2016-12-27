@@ -3,7 +3,8 @@
 let configPromise
 async function loadConfig () {
   return {
-    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    proxyClient: true
   }
 }
 

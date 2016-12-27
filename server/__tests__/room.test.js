@@ -25,7 +25,7 @@ describe('room tests', () => {
   })
 
   it('should allow second player to join and start game', async () => {
-    room.setUserStatus('room1', 'user2', {
+    await room.setUserStatus('room1', 'user2', {
       gameType: '1v1'
     })
     const userStatus = await room.getUserStatus('room1', 'user2', '1v1')

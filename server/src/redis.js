@@ -3,8 +3,13 @@
 import { createClient } from 'redis'
 import Redlock from 'redlock'
 
+const { REDIS_HOST } = process.env
+
 export async function getRedisClient () {
-  let client = createClient()
+  if (!REDIS_HOST) return await getFakeRedisClient()
+
+  const client = createClient(REDIS_HOST)
+
   const redlock = new Redlock([client], {
     driftFactor: 0.01,
     retryCount: 4,
@@ -28,23 +33,6 @@ export async function getRedisClient () {
         })
       })
     },
-    // TODO this has not been tested
-    getNested: async (root:string, keys:Array<string>) => {
-      return new Promise((resolve, reject) => {
-        let query = redis.multi()
-        keys.forEach(key => {
-          query = query.get(`${root}:${key}`)
-        })
-        query.exec((err, results) => {
-          if (err) return reject(err)
-          let obj = {}
-          keys.forEach((key, index) => {
-            obj[key] = results[index]
-          })
-          return obj
-        })
-      })
-    },
     lock: async (key:string) => {
       return await redlock.lock(key, 200)
     },
@@ -55,4 +43,30 @@ export async function getRedisClient () {
       client.quit()
     }
   }
+}
+
+let fakeClient
+export async function getFakeRedisClient () {
+  if (fakeClient) return fakeClient
+  console.log(`using fake redis client\nset REDIS_HOST to use real redis client and persist data`)
+  let store = {}
+  fakeClient = {
+    get: async (key:string) => {
+      return store[key] || null
+    },
+    flush: async () => {
+      store = {}
+    },
+    lock: async (key:string) => {
+      return { unlock: async () => {
+      }}
+    },
+    set: async (key:string, value:string) => {
+      store[key] = value
+    },
+    close: async () => {
+      // nop
+    }
+  }
+  return fakeClient
 }
