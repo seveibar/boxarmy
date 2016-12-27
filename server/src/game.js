@@ -56,8 +56,8 @@ export class GameManager {
         state: JSON.stringify(game.getState()),
         type,
         sessions: JSON.stringify(sessionMap),
-        start_time: moment().format(),
-        last_update_time: moment().format()
+        start_time: moment().format('x'),
+        last_update_time: moment().format('x')
       }
     })
   }
@@ -116,11 +116,12 @@ export class GameManager {
       'type', 'last_update_time', 'state'
     ], async (obj) => {
       const { type, state, last_update_time } = obj
-      let lastUpdateTime = moment(last_update_time)
+      let lastUpdateTime = moment(last_update_time, 'x')
       game = new Game(JSON.parse(state))
 
       // Update the game if it needs to be updated
       while (moment().diff(lastUpdateTime, 'ms') > gameTypeUpdateTime[type]) {
+        console.log(moment().diff(lastUpdateTime, 'ms'))
         lastUpdateTime = lastUpdateTime.add(gameTypeUpdateTime[type], 'ms')
         game.tick()
       }
@@ -129,7 +130,7 @@ export class GameManager {
 
       return {
         type,
-        last_update_time: lastUpdateTime.format(),
+        last_update_time: lastUpdateTime.format('x'),
         state: JSON.stringify(game.getState())
       }
     })

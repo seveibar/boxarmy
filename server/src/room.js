@@ -93,11 +93,12 @@ export class RoomManager {
     } = {}
 
     // Remove any users that haven't pinged in some time
-    // for (let sessionId in sessions) {
-    //   if (moment().diff(moment(sessions[sessionId].lastPing), 's') > 2) {
-    //     delete sessions[sessionId]
-    //   }
-    // }
+    for (let sessionId in sessions) {
+      if (moment().diff(moment(sessions[sessionId].lastPing), 's') > 2) {
+        console.log('booting idle user (idle for ', moment().diff(moment(sessions[sessionId].lastPing), 's'), ')')
+        delete sessions[sessionId]
+      }
+    }
 
     // Add waiting users to their game waiting lists
     Object.keys(sessions).forEach((sessionId) => {

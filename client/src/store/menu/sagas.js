@@ -10,7 +10,9 @@ import {
 import {
   receivedSessionId
 } from '../auth/actions'
-
+import {
+  goToMain
+} from './actions'
 import {
   startGame
 } from '../game/actions'
@@ -52,6 +54,10 @@ export function* pollRoomStatus () {
         `sessionid=${sessionId}`
       ].join('&')
       const response = yield call(axios, `${apiURL}/room?${getParams}`)
+      if (response.data.error) {
+        yield put(goToMain())
+        continue
+      }
       const { gameId, gameType, status, playerIndex } = response.data
 
       if (status === 'in game') {

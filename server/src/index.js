@@ -22,7 +22,7 @@ export async function serve (options) {
 
   app.use(bodyParser.json())
 
-  server.listen(8080)
+  server.listen(8080, '0.0.0.0')
 
   await setupAPIRoutes(app)
 

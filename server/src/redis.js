@@ -58,7 +58,12 @@ export async function getFakeRedisClient () {
       store = {}
     },
     lock: async (key:string) => {
+      while (store[key]) {
+        await new Promise((resolve) => setTimeout(resolve, 10))
+      }
+      store[key] = true
       return { unlock: async () => {
+        store[key] = false
       }}
     },
     set: async (key:string, value:string) => {

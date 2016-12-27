@@ -131,8 +131,6 @@ export default class Game {
             fromCell.cell.force = 1;
           }
         }
-
-
         break;
       }
     });
