@@ -6,7 +6,7 @@ import {
   GO_TO_MAIN
 } from './constants'
 
-export function selectPlay(){
+export function selectPlay () {
   return { type: PLAY_SELECTED }
 }
 

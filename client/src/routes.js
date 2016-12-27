@@ -5,10 +5,10 @@ import { App } from 'components'
 import { MenuPage, GamePage } from 'containers'
 
 const routes = [
-  (<Route path="/game" component={App}>
+  (<Route path="/" component={App}>
     <IndexRoute component={MenuPage} />
   </Route>),
-  (<Route path="/" component={App}>
+  (<Route path="/game" component={App}>
     <IndexRoute component={GamePage} />
   </Route>)
 ]

@@ -6,6 +6,10 @@ import {
   PLAY_SELECTED
 } from './constants'
 
+import {
+  START_GAME
+} from '../game/constants'
+
 const initialState = {
   submenu: 'intro',
   mode: undefined
@@ -28,6 +32,11 @@ const MenuPageReducer = (state: any, action: any) => {
       return {
         ...state,
         submenu: 'intro'
+      }
+    case START_GAME:
+      return {
+        ...state,
+        submenu: 'in game'
       }
     default:
       return initialState

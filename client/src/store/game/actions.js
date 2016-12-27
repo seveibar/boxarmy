@@ -7,7 +7,8 @@ import {
   SCROLL,
   CELL_SELECTED,
   MOVE_SELECTED_CELL,
-  CLEAR_MOVES
+  CLEAR_MOVES,
+  START_GAME
 } from './constants'
 
 export function mouseDown (x:number, y:number) {
@@ -36,4 +37,8 @@ export function moveSelectedCell (direction: "up"|"left"|"right"|"down") {
 
 export function clearMoves () {
   return { type: CLEAR_MOVES }
+}
+
+export function startGame () {
+  return { type: START_GAME }
 }
