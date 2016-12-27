@@ -1,4 +1,6 @@
 client/node_modules
 game/node_modules
 server/node_modules
-
+client/dist
+game/dist
+server/dist
