@@ -2,7 +2,9 @@
 
 import { range } from 'range';
 
-import type { InitParams, GameState, Move } from './types.flow';
+import type {
+  InitParams, GameState, Move, Cell, CoordinateCell
+} from './types.flow';
 
 export default class Game {
 
@@ -49,8 +51,22 @@ export default class Game {
     });
   }
 
-  getCell(x:number, y:number) {
-    return this.state.cells[x][y]
+  getCell({ cell: { x, y } }) : CoordinateCell {
+    return {
+      cell: this.state.cells[x][y], x, y
+    };
+  }
+
+  getTargetCell({ cell: { x, y }, direction }) : CoordinateCell {
+    const { size } = this.state;
+    const dx = (direction === 'right' && 1 || 0) - (direction === 'left' && 1 || 0);
+    const dy = (direction === 'up' && 1 || 0) - (direction === 'down' && 1 || 0);
+    return this.getCell({
+      cell: {
+        x: Math.min(Math.max(x + dx, 0), size.x),
+        y: Math.min(Math.max(y + dy, 0), size.y)
+      }
+    });
   }
 
   tick() {
@@ -64,6 +80,15 @@ export default class Game {
       }
     }));
 
+    // Increment all city cells every tick
+    state.cells.forEach(row => row.forEach((cell) => {
+      if (cell.owner !== 0 && cell.type === 'city') {
+        if (cell.owner !== 0 || cell.force < 45) {
+          cell.force += 1;
+        }
+      }
+    }));
+
     // Increment all land cells every 30 seconds (60 ticks)
     if (state.ticks % 60 === 0) {
       state.cells.forEach(row => row.forEach((cell) => {
@@ -74,9 +99,40 @@ export default class Game {
     }
 
     // Move players, each player gets to execute one possible move
-    state.players.slice(1).forEach((player) => {
-      const move = player.moves[0]
-      const fromCell = { x:
+    state.players.forEach((player, playerIndex) => {
+      while (true) {
+        if (player.moves.length === 0) break;
+        const move = player.moves[0];
+        player.moves = player.moves.slice(1);
+        const fromCell = this.getCell(move);
+        const toCell = this.getTargetCell(move);
+
+        // Movement must not be to same cell (happens at borders)
+        if (toCell.x === fromCell.x && toCell.y === fromCell.y) {
+          continue;
+        }
+
+        // Player must own cell
+        console.log(playerIndex);
+        if (fromCell.cell.owner !== playerIndex) {
+          continue;
+        }
+
+        if (toCell.cell.owner === playerIndex) {
+          toCell.cell.force += fromCell.cell.force - 1;
+          fromCell.cell.force = 1;
+        } else {
+          // Moving into enemy cell
+          if (toCell.cell.force < fromCell.cell.force - 1) {
+            toCell.cell.owner = fromCell.cell.owner;
+          }
+          fromCell.cell.force = 1;
+          toCell.cell.force -= fromCell.cell.force - 1;
+        }
+
+
+        break;
+      }
     });
 
   }

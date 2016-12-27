@@ -22,6 +22,12 @@ export type Cell = {
   type: "king"|"mountain"|"land"|"city"
 };
 
+export type CoordinateCell = {
+  cell: Cell,
+  x: number,
+  y: number
+}
+
 export type GameState = {
   ticks: number,
   size: { x:number, y:number },
