@@ -37,7 +37,7 @@ Now visit `http://localhost:8080` in your browser.
 
 TODO (we're not too worried about this right now)
 
-To run in a production mode, you'll want to configure nginx to statically serve `/*` from `client/dist`. You'll then need to set the `NODE_ENV=production` and `REDIS_HOST=redis://yourredishost`.
+To run in a production mode, you'll want to configure nginx to statically serve `/*` from `client/dist`. You'll then need to set the `NODE_ENV=production` and `REDIS_HOST=redis://yourredishost`. The server can be run with the same `yarn start` command.
 
 ## Architecture
 
