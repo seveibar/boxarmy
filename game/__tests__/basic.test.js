@@ -81,7 +81,7 @@ describe('game mechanics', () => {
   it('should move cells on a turn', () => {
     game.tick();
 
-    expect(game.getState().cells[1][0].owner).toBe(1);
+    expect(game.getState().cells[0][1].owner).toBe(1);
 
   });
 

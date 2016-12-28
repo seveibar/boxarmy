@@ -28,12 +28,10 @@
   "scripts": {
     "clean": "rm -rf coverage dist tmp",
     "lint": "eslint .",
-    "postlint": "npm run typecheck",
-    "typecheck": "flow check",
     "pretest": "npm run lint",
     "test": "npm run test-only",
-    "test-only": "jest",
-    "test:watch": "jest --watch",
+    "test-only": "jest --runInBand",
+    "test:watch": "jest --runInBand --watch",
     "build": "babel src/**/*.js -d dist",
     "build:watch": "babel --watch src/**/*.js -d dist"
   },

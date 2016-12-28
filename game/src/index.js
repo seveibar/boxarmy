@@ -127,7 +127,7 @@ export default class Game {
             toCell.cell.force = (fromCell.cell.force - 1) - toCell.cell.force;
             fromCell.cell.force = 1;
           } else {
-            toCell.cell.force = toCell.cell.force - (fromCell.cell.force - 1);
+            toCell.cell.force -= (fromCell.cell.force - 1);
             fromCell.cell.force = 1;
           }
         }

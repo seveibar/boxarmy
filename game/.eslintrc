@@ -17,12 +17,16 @@
     ],
     "keyword-spacing": 1,
     "space-before-blocks": [1],
-    "no-unused-vars": 1,
     "quotes": 0,
     "no-trailing-spaces": 1,
     "comma-dangle": 0,
     "comma-spacing": 0,
     "padded-blocks": 0,
+    "no-unused-vars": 1,
+    "no-mixed-operators": 1,
+    "no-continue": 1,
+    "no-lonely-if": 1,
+    "no-param-reassign": 1,
     "no-use-before-define": 0,
   }
 }
