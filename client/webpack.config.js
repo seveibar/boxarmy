@@ -41,7 +41,7 @@ var config = {
   ],
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel', exclude: /boxarmy-client\/node_modules/ },
+      { test: /\.js$/, loader: 'babel', exclude: [/boxarmy-client\/node_modules/, /client\/node_modules/] },
       { test: /\.png$/, loader: 'url?prefix=images/&limit=8000&mimetype=image/png' },
       { test: /\.jpg$/, loader: 'url?prefix=images/&limit=8000&mimetype=image/jpeg' },
       { test: /\.woff$/, loader: 'url?prefix=fonts/&limit=8000&mimetype=application/font-woff' },
