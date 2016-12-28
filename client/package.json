@@ -1,5 +1,5 @@
 {
-  "name": "box-army-client",
+  "name": "boxarmy-client",
   "version": "0.1.0",
   "main": "./server.js",
   "scripts": {

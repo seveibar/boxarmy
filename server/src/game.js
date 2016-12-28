@@ -1,7 +1,7 @@
 // @flow
 
 export type GameType = 'FFA8'|'1v1'
-import Game from 'gederals-game'
+import Game from 'boxarmy-game-logic'
 import moment from 'moment'
 import { ResourceManager } from './resourceManager'
 
@@ -121,7 +121,6 @@ export class GameManager {
 
       // Update the game if it needs to be updated
       while (moment().diff(lastUpdateTime, 'ms') > gameTypeUpdateTime[type]) {
-        console.log(moment().diff(lastUpdateTime, 'ms'))
         lastUpdateTime = lastUpdateTime.add(gameTypeUpdateTime[type], 'ms')
         game.tick()
       }

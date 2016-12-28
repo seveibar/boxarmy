@@ -1,6 +1,6 @@
 // @flow
 
-import boardStateExample from '../../../../game/__tests__/state_example.json'
+import lodash from 'lodash'
 
 import {
   MOUSE_DOWN,
@@ -14,7 +14,27 @@ import {
   UPDATE_STATE
 } from './constants'
 
-import lodash from 'lodash'
+// Simple board to serve as initial state (sort of a smoke test)
+const boardStateExample = {
+  'size': { 'x': 1, 'y': 1 },
+  'players': [
+    {
+      'name': 'neutral',
+      'moves': []
+    },
+    {
+      'name': 'player1',
+      'moves': []
+    }
+  ],
+  'cells': [
+    [{
+      'type': 'king',
+      'owner': 1,
+      'force': 1
+    }]
+  ]
+}
 
 const initialState = {
   boardState: boardStateExample,

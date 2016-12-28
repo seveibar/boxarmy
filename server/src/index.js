@@ -2,10 +2,10 @@
 import express from 'express'
 import { Server } from 'http'
 import setupAPIRoutes from './routes'
-import { start as startClient } from 'generals-client'
 import getConfig from './config'
 import proxy from 'http-proxy-middleware'
 import bodyParser from 'body-parser'
+import { start as startClient } from 'boxarmy-client'
 
 export async function serve (options) {
   console.log('starting generals server')
