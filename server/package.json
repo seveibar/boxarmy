@@ -1,9 +1,8 @@
 {
-  "name": "generals-server",
+  "name": "boxarmy-server",
   "version": "0.0.0",
-  "description": "Generals game server",
+  "description": "Box Army Game Server",
   "engineStrict": true,
-  "private": true,
   "engines": {
     "node": ">= 6.2"
   },

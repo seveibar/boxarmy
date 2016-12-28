@@ -1,9 +1,8 @@
 {
-  "name": "gederals-game",
+  "name": "boxarmy-game-logic",
   "version": "0.0.0",
-  "description": "Gederals game logic",
+  "description": "Box Army Game Logic",
   "engineStrict": true,
-  "private": true,
   "engines": {
     "node": ">= 6.2"
   },
@@ -33,7 +32,7 @@
     "typecheck": "flow check",
     "pretest": "npm run lint",
     "test": "npm run test-only",
-    "test-only": "jest --coverage",
+    "test-only": "jest",
     "test:watch": "jest --watch",
     "build": "babel src/**/*.js -d dist",
     "build:watch": "babel --watch src/**/*.js -d dist"
