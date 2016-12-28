@@ -8,7 +8,7 @@ Box Army was hugely inspired by the massively popular [generals.io](http://gener
 
 ## Why?
 
-I wanted to build AI/computer players and experiment with some of the game settings of generals.io, but the game isn't currently open source.
+I wanted to experiment with some of the game settings of generals.io and maybe build an AI player, but the game isn't currently open source. Thus, boxarmy was created to allow for experimentation with various game mechanics and experiment with AI players.
 
 As I created the project I experimented with a stateless server approach to increase horizontal scalability. Hopefully the flexibility of the architecture will also allow people to build some really cool extensions/alternate game modes.
 
