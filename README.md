@@ -33,6 +33,8 @@ yarn start
 
 Now visit `http://localhost:8080` in your browser.
 
+Had a problem? [File an issue!](https://github.com/seveibar/boxarmy/issues/new) Others are probably having the same problem!
+
 ### Running in Production
 
 TODO (we're not too worried about this right now)
