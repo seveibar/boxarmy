@@ -26,7 +26,7 @@ export function* pollForGameState (): Generator<*, *, *> {
       sessionId: state.auth.sessionId
     }))
     if (inGame && gameId) {
-      const response = yield call(axios, `${apiURL}/game?sessionid=${sessionId}&gameid=${gameId}`)
+      const response = yield call(axios, `${apiURL}/game?sessionid=${encodeURIComponent(sessionId)}&gameid=${encodeURIComponent(gameId)}`)
       yield put(updateState(response.data))
     }
     yield delay(400)

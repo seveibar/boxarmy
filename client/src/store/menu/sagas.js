@@ -51,7 +51,7 @@ export function* pollRoomStatus () {
     if (menu.submenu === 'waiting') {
       let getParams = [
         menu.roomId ? `roomid=${encodeURIComponent(menu.roomId)}` : '',
-        `sessionid=${sessionId}`
+        `sessionid=${encodeURIComponent(sessionId)}`
       ].join('&')
       const response = yield call(axios, `${apiURL}/room?${getParams}`)
       if (response.data.error) {
