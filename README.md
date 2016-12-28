@@ -31,6 +31,8 @@ cd server
 yarn start
 ```
 
+Now visit `http://localhost:8080` in your browser.
+
 ### Running in Production
 
 TODO (we're not too worried about this right now)
@@ -47,9 +49,15 @@ The `game` project is a node module that handles game logic and game state chang
 
 The `server` project runs the `/api` endpoints and in development serves the `client` directory and simulates a `redis` server. This directory was created using a modified [node-flowtype-boilerplate](https://github.com/jsynowiec/node-flowtype-boilerplate)
 
+## Contributing
+
+Feel free to tackle any of the posted [issues](https://github.com/seveibar/boxarmy/issues). If you'd like to add a feature or found a bug feel free to open an issue for discussion.
+
+Generally speaking, if you're introducing a feature or mode you should throw in a couple tests, if you need any help with a feature just open a PR/issue and I can provide assistance.
+
 ## Testing
 
-Each sub-project can be tested independently, just run `yarn test`.
+Each sub-project can be tested independently, just run `yarn test` in the appropriate directory. Tests are usually defined in `__tests__` but [jest](https://facebook.github.io/jest/) will look for any files that match `*.test.js`, so if appropriate they can reside in the same directory as the source files.
 
 ## Special Thanks
 
