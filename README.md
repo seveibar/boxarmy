@@ -2,7 +2,7 @@
 
 *Note: This is still a very early stage project*
 
-Box Army is an addicting real-time strategy game that can be played in the brower. [Check it out at boxarmy.io!](http://boxarmy.io)
+Box Army is an addicting real-time strategy game that can be played in the browser. [Check it out at boxarmy.io!](http://boxarmy.io)
 
 Box Army was hugely inspired by the massively popular [generals.io](http://generals.io) game.
 
